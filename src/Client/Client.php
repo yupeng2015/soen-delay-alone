@@ -52,9 +52,11 @@ class Client
      * @param int $timeout
      * @return bool|Job
      */
-    public function bPop ($topic, $timeout = 120) {
+    public function bPop ($topic, $timeout = 3600) {
+        ini_set('default_socket_timeout', -1);
         while (true) {
-            $result = $this->driver->brPop([Config::PREFIX_READY_QUEUE . $topic], $timeout);
+//            $result = $this->driver->brPop([Config::PREFIX_READY_QUEUE . $topic], $timeout);
+            $result = $this->driver->rPop(Config::PREFIX_READY_QUEUE . $topic);
             if(empty($result)){
 //                return false;
                 continue;
