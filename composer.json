@@ -1,0 +1,21 @@
+{
+  "name": "soen/delay-alone",
+  "description": "soen/delay-alone",
+  "type": "library",
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "soen",
+      "email": "soen66@163.com"
+    }
+  ],
+  "autoload": {
+      "psr-4": {
+        "Soen\\Delay\\Alone\\": "src/"
+      }
+  },
+  "minimum-stability": "dev"
+}
