@@ -8,7 +8,7 @@ composer require soen/delay-alone:1.0.0-alpha1
 <?php
 require_once './vendor/autoload.php';
 $redisConfig = [
-    'host'          =>  'redis',
+    'host'          =>  '127.0.0.1',
     'port'          =>  '6379',
     'database'      =>  '0',
     'password'      =>  '',
