@@ -17,5 +17,5 @@
         "Soen\\Delay\\Alone\\": "src/"
       }
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "alpha"
 }
