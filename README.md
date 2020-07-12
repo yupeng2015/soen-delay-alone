@@ -1,5 +1,6 @@
+因为刚开发完成时间不长，目前还处于内测中，基本功能已通过测试，
 使用composer安装：
-composer require soen/delay-alone
+composer require soen/delay-alone:1.0.0-alpha1
 
 #### 创建demo示例：
 ##### demo项目根目录创建public.php:
