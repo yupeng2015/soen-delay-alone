@@ -55,8 +55,14 @@ cli内执行 `php push.php`, 就会提交一组等待处理的数据
 require_once 'public.php';
 $redis = (new \Soen\Delay\Alone\Redis($redisConfig))->getDriver();
 $client = new Soen\Delay\Alone\Client\Client($redis);
-$data = $client->bPop('topic1');
-var_dump($data);
+ini_set('default_socket_timeout', -1);
+while (true){
+    $data = $client->bPop('topic1', 3600);
+    if(!$data){
+        continue;
+    }
+    var_dump($data);
+}
 ```
 cli执行`php pop.php`,进行队列消费
 
