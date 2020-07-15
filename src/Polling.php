@@ -13,7 +13,7 @@ class Polling
     public $driver;
     public $dispatch;
     public $config = [];
-    function __construct(int $duration = 1, $driver)
+    function __construct(int $duration = 1000, $driver)
     {
         $this->duration = $duration;
         $this->driver = $driver;
@@ -22,8 +22,11 @@ class Polling
     public function run () {
         $i = 0;
         while (true){
+            /* 尽量保证间隔一秒运行一次 扫描 */
+            $t1 = $this->msectime();
             $this->handle($i);
-            sleep($this->duration);
+            $difference = $this->msectime() - $t1;
+            usleep(($this->duration - $difference) * 1000);
         }
 //        Timer::tick($this->duration, function ()use(&$i){
 //            $this->handle($i);
@@ -90,6 +93,13 @@ class Polling
 //        $this->driver->set('teshu', 'hahahaha');
         $this->driver->exec();
         echo '延迟队列入列一个数据，id集合为' . json_encode($ids);
+    }
+
+    //获取毫秒
+    function msectime() {
+        list($msec, $sec) = explode(' ', microtime());
+        $msectime = (float)sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000);
+        return $msectime;
     }
 
 }

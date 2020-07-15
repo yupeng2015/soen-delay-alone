@@ -53,26 +53,19 @@ class Client
      * @return bool|Job
      */
     public function bPop ($topic, $timeout = 3600) {
-        ini_set('default_socket_timeout', -1);
-        while (true) {
-//            $result = $this->driver->brPop([Config::PREFIX_READY_QUEUE . $topic], $timeout);
-            $result = $this->driver->rPop(Config::PREFIX_READY_QUEUE . $topic);
-            if(empty($result)){
-//                return false;
-                continue;
-            }
-            $jobId = array_pop($result);
-            $jobDetail= $this->driver->hGetAll(Config::PREFIX_JOB_POOL . $jobId);
-            if (!$jobDetail || empty($jobDetail['topic']) || empty($jobDetail['body'])) {
-//                return false;
-                continue;
-            }
-            $this->driver->del(Config::PREFIX_JOB_POOL . $jobId);
-            $data = new Job($jobDetail['id'], $jobDetail['body'], $jobDetail['delay'], $jobDetail['topic'], $jobDetail['ttr']);
-            var_dump($data);
-//            return new Job($jobDetail['id'], $jobDetail['body'], $jobDetail['delay'], $jobDetail['topic'], $jobDetail['ttr']);
+        /* brPop方式读取 */
+//       $result = $this->driver->brPop([Config::PREFIX_READY_QUEUE . $topic], $timeout);
+        $jobId = $this->driver->rPop(Config::PREFIX_READY_QUEUE . $topic);
+        if(empty($jobId)){
+            return null;
         }
-
+        $jobDetail= $this->driver->hGetAll(Config::PREFIX_JOB_POOL . $jobId);
+        if (!$jobDetail || empty($jobDetail['topic']) || empty($jobDetail['body'])) {
+            return null;
+        }
+        $this->driver->del(Config::PREFIX_JOB_POOL . $jobId);
+        $data = new Job($jobDetail['id'], $jobDetail['body'], $jobDetail['delay'], $jobDetail['topic'], $jobDetail['ttr']);
+        return $data;
     }
 
     /**
